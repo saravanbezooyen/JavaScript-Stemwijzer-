@@ -46,8 +46,13 @@ function startFunction() {
 }
 
 function changeContent() {
-	document.getElementById("questionTitle").innerHTML = subjects[currentSubject].title;
-	document.getElementById("questionText").innerHTML = subjects[currentSubject].statement;
+	if(currentSubject >= subjects.length) {
+		results();
+	}
+	else {
+		document.getElementById("questionTitle").innerHTML = subjects[currentSubject].title;
+		document.getElementById("questionText").innerHTML = subjects[currentSubject].statement;
+	}
 }
 
 function partiesOpinion() {
@@ -118,6 +123,36 @@ function partiesOpinion() {
 			}
 		}
 	}
+	
+}
 
+function results(){
+	console.log('test');
+	removeElement('buttonEens');
+	removeElement('buttonGeenVanBeide');
+	removeElement('buttonOneens');
+	removeElement('buttonSkipQuestion');
+	removeElement('showOpinons');
+	removeElement('headerPartiesOpinion');
+	removeElement('questionText');
 
+	 
+	document.getElementById("questionTitle").innerHTML = 'Resultaten';
+
+	for(var j = 0; j <= parties.length; j++) {
+		var partiesResultsPara = document.createElement("p");
+		var partiesName= document.createTextNode(parties[j].name);
+		partiesResultsPara.appendChild(partiesName);
+
+		var containerQuestion = document.getElementById("containerQuestion");
+		containerQuestion.appendChild(partiesResultsPara);
+	}
+	
+
+}
+
+function removeElement(btnId) {
+    var elem = document.getElementById(btnId);
+    elem.parentNode.removeChild(elem);
+    return false;
 }
