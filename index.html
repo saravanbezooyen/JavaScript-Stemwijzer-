@@ -19,24 +19,24 @@
 		<button id="buttonEens" class="button">Eens</button>
 		<button id="buttonGeenVanBeide" class="button">Geen van beide</button>
 		<button id="buttonOneens" class="button">Oneens</button>
-		<button id="buttonSkipQuestion" class="button">Sla deze vraag over</button>
+		<button id="buttonSkipQuestion" class="button">Sla deze vraag over <i class="fas fa-angle-double-right"></i></button>
 
-		<h2 onclick="partiesOpinion()">Wat vinden de partijen?</h2>
+		<h2 onclick="partiesOpinion()">Wat vinden de partijen? <i class="fas fa-angle-down"></i></h2>
 		<div id="showOpinons">	
-			<div class="opinonInner">
+			<div id="opinonInnerEens" class="opinonInner">
 				<h3 id="">Eens</h3>
-				<p id="eensOpinon"></p><i class="fas fa-angle-down" id="iconOnClickEens"></i>
-				<p id="eensExplanation"></p>
+				<div id="eensOpinon"></div>
+				<div id="eensExplanation"></div>
 			</div>
-			<div class="opinonInner">
+			<div class="opinonInner" id="opinonInnerGeenVanBeide">
 				<h3 id="">Geen van beide</h3>
-				<p id="geenVanBeideOpinon"></p><i class="fas fa-angle-down" id="iconOnClick"></i>
-				<p id="geenVanBeideExplanation"></p>
+				<div id="geenVanBeideOpinon"></div>
+				<div id="geenVanBeideExplanation"></div>
 			</div>
-			<div class="opinonInner">
+			<div class="opinonInner" id="opinonInnerOneens">
 				<h3 id="">Oneens</h3>
-				<p id="oneensOpinon"></p><i class="fas fa-angle-down" id="iconOnClick"></i>
-				<p id="oneensExplanation"></p>
+				<div id="oneensOpinon"></div>
+				<div id="oneensExplanation"></div>
 			</div>
 		</div>
 	</div>	
