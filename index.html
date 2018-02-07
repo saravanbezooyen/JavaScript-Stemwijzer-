@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Stemwijzer</title>
+	<link rel="stylesheet" href="css/style.css">
+	<meta charset="UTF-8">
+</head>
+<body>
+	<script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
+	<button id="buttonStart" onclick="startFunction()">Start</button>
+
+	<div id="containerQuestion">
+		<button id="buttonGoBack">Back</button>
+
+		<h1 id="questionTitle"></h1>		
+
+		<p id="questionText"></p>
+
+		<button id="buttonEens" class="button">Eens</button>
+		<button id="buttonGeenVanBeide" class="button">Geen van beide</button>
+		<button id="buttonOneens" class="button">Oneens</button>
+		<button id="buttonSkipQuestion" class="button">Sla deze vraag over</button>
+
+		<h2 onclick="partiesOpinion()">Wat vinden de partijen?</h2>
+		<div id="showOpinons">	
+			<div class="opinonInner">
+				<h3 id="">Eens</h3>
+				<p id="eensOpinon"></p><i class="fas fa-angle-down" id="iconOnClickEens"></i>
+				<p id="eensExplanation"></p>
+			</div>
+			<div class="opinonInner">
+				<h3 id="">Geen van beide</h3>
+				<p id="geenVanBeideOpinon"></p><i class="fas fa-angle-down" id="iconOnClick"></i>
+				<p id="geenVanBeideExplanation"></p>
+			</div>
+			<div class="opinonInner">
+				<h3 id="">Oneens</h3>
+				<p id="oneensOpinon"></p><i class="fas fa-angle-down" id="iconOnClick"></i>
+				<p id="oneensExplanation"></p>
+			</div>
+		</div>
+	</div>	
+
+	<script type="text/javascript" src="js/data.js"></script>	
+	<script type="text/javascript" src="js/script.js"></script>
+</body>
+</html>
