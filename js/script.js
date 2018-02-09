@@ -17,9 +17,9 @@ window.onload = function(){
 		});
 	}
 
-	addEventListenerToButtons("buttonEens", "eens");
-	addEventListenerToButtons("buttonGeenVanBeide", "Geen van beide");
-	addEventListenerToButtons("buttonOneens", "Oneens");
+	addEventListenerToButtons("buttonEens", "pro");
+	addEventListenerToButtons("buttonGeenVanBeide", "ambivalent");
+	addEventListenerToButtons("buttonOneens", "contra");
 	addEventListenerToButtons("buttonSkipQuestion", "");
 
 	document.getElementById("buttonGoBack").addEventListener("click", function() {
@@ -82,7 +82,7 @@ function partiesOpinion() {
 		    }*/
 		} 
 		else {
-			if (subjects[currentSubject].parties[i].position === 'ambivalent'){
+			if (subjects[currentSubject].parties[i].position == 'ambivalent'){
 				var geenVanBeidePara = document.createElement("p");
 				var geenVanBeideOpinon = document.createTextNode(subjects[currentSubject].parties[i].name);
 				var explanationGeenVanBeide = document.createTextNode(subjects[currentSubject].parties[i].explanation);
@@ -127,7 +127,6 @@ function partiesOpinion() {
 }
 
 function results(){
-	console.log('test');
 	removeElement('buttonEens');
 	removeElement('buttonGeenVanBeide');
 	removeElement('buttonOneens');
@@ -139,14 +138,34 @@ function results(){
 	 
 	document.getElementById("questionTitle").innerHTML = 'Resultaten';
 
-	for(var j = 0; j <= parties.length; j++) {
-		var partiesResultsPara = document.createElement("p");
-		var partiesName= document.createTextNode(parties[j].name);
-		partiesResultsPara.appendChild(partiesName);
+	// loop door de choices
+	var finalResults = [];
+	var count = 0;
 
-		var containerQuestion = document.getElementById("containerQuestion");
-		containerQuestion.appendChild(partiesResultsPara);
+
+	for (var i = 0; i < choices.length; i++) {
+		if (subjects[i].parties[i].position == choices[i]) {
+			finalResults[i] = parties[i].name + count;
+			count++;
+		}
+
 	}
+		// haal het juist subject op (subject op dezelfde positie in array als positie van de choice in de array)
+		// loop door de parties uit het opgehaalde subject
+			// als antwoord overeenkomt, tel 1 op bij resultaat van die partij in de results array
+
+
+	/*for(var j = 0; j <= parties.length; j++) {
+		for(var i = 0; choices[i] == subjects[i].parties[j].position; i++){
+			var partiesResultsPara = document.createElement("p");
+			var partiesName = document.createTextNode(parties[j].name);
+			partiesResultsPara.appendChild(partiesName);
+
+			var containerQuestion = document.getElementById("containerQuestion");
+			containerQuestion.appendChild(partiesResultsPara);
+		}
+	}*/
+
 	
 
 }
