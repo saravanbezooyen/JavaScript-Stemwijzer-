@@ -8,11 +8,13 @@ body {
 	width: 60%;
 	margin: auto;
 	padding: 15px;
+	border: dotted 1px;
 }
 
 #showOpinons,
 #containerQuestion {
 	display: none;
+	overflow: auto;
 }
 
 .opinonInner {
@@ -60,12 +62,13 @@ body {
 }
 
 .opinonButton {
-	background-color: grey;
+	background-color: #3F3F3F;
 	color: #fff;
 	text-align: center;
 	padding: 10px 15px;
 	text-transform: uppercase;
 	letter-spacing: 1px;
+	margin: 0;
 }
 
 #questionTitle {
@@ -87,9 +90,15 @@ body {
 	border-radius: 50px;
 	transition: transform .2s;
 	border: 0;
-outline: 0;
+	outline: 0;
+	font-size: 20px;
 }
 
 #buttonGoBack:hover {
     transform: translateX(-3px);
 }
+
+#buttonSkipQuestion {
+ 	background-color: transparent;
+ 	color: #8F9293;
+ }

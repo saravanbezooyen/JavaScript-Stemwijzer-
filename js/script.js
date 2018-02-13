@@ -138,18 +138,36 @@ function results(){
 	 
 	document.getElementById("questionTitle").innerHTML = 'Resultaten';
 
-	// loop door de choices
 	var finalResults = [];
+	var countResults = 0;
 	var count = 0;
-
+	var countParties = 0;
 
 	for (var i = 0; i < choices.length; i++) {
-		if (subjects[i].parties[i].position == choices[i]) {
-			finalResults[i] = parties[i].name + count;
-			count++;
+		for (var j = 0; j < subjects[count].parties.length; j++) {
+			if (subjects[count].parties[j].position == choices[j]) {
+				countResults++;
+				finalResults[j] = subjects[count].parties[j].name + ' ' + countResults;	
+				//countParties++;
+			} 
+			else {
+				finalResults[j] = subjects[count].parties[j].name + ' ' + countResults;
+				//countParties++;
+			}
+		count++;	
 		}
-
+	
 	}
+	console.log(finalResults);
+
+	
+				var partiesResultsPara = document.createElement("p");
+				var partiesName = document.createTextNode(finalResults);
+				partiesResultsPara.appendChild(partiesName);
+
+				var containerQuestion = document.getElementById("containerQuestion");
+				containerQuestion.appendChild(partiesResultsPara);
+		// loop door de choices
 		// haal het juist subject op (subject op dezelfde positie in array als positie van de choice in de array)
 		// loop door de parties uit het opgehaalde subject
 			// als antwoord overeenkomt, tel 1 op bij resultaat van die partij in de results array
