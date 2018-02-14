@@ -104,10 +104,10 @@ body {
  	color: #8F9293;
  }
 
- #buttonSelectBigParties,
- #buttonResults {
- 	display: none;
- 	margin: 2px;
+#buttonSelectBigParties,
+#buttonResults {
+	display: none;
+	margin: 2px;
 	box-sizing: border-box;
 	float: left;
 	width: 49%;
@@ -117,4 +117,4 @@ body {
 	font-size: 16px;
 	padding: 10px 15px;
 	text-align: center;
- }
+}

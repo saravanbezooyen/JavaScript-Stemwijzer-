@@ -15,10 +15,10 @@ window.onload = function(){
 			
 			currentNr++;
 
-			var x = document.getElementById("myCheck").checked;
+			/*var x = document.getElementById("myCheck").checked;
 		    if (x == true) {
 		    	finalParty.result++;	    	
-		    }	
+		    }	*/
 		    console.log(choices);		
 		});
 	}
@@ -105,8 +105,7 @@ function partiesOpinion() {
 				}
 			}
 		}
-	}
-	
+	}	
 }
 
 function selectParties() {
@@ -119,7 +118,8 @@ function selectParties() {
 	removeElement('myCheck');
 	removeElement('checkboxQuestion');
 	removeElement("buttonSkipQuestion");
-
+	removeElement("buttonGoBack");
+	
 	document.getElementById("questionTitle").innerHTML = 'Kies je partijen';
 
 	var buttonSelectBigParties = document.getElementById("buttonSelectBigParties");
@@ -134,34 +134,47 @@ function selectParties() {
     }
 
 	for (var i = 0; i < parties.length; i++) {
-		var input = document.createElement("input");
-		input.type = "checkbox";
-		input.id = "checkboxParties";
-		var partiesResultsPara = document.createElement("p");
-		var partiesName = document.createTextNode(parties[i].name);
-		partiesResultsPara.appendChild(input, partiesName);
+		var div = document.createElement('div');
+		div.innerHTML = '<input type="checkbox" id="' + parties[i].name + '"/>' + ' '+ parties[i].name;
 
 		var containerQuestion = document.getElementById("containerQuestion");
-		containerQuestion.appendChild(partiesResultsPara);
+		containerQuestion.appendChild(div);
 	}
 
-	var x = document.getElementById("checkboxParties").checked;
+	
+
+
+	/*var x = document.getElementById("checkboxParties").checked;
     if (x == true) {
     	parties = partiesArray[i];	    	
-    }	
+    }	*/
 
 }
 
-
-
 function results(){
+	
+
+	var array = [];
+
+	for (i = 0; i < parties.length; i++) {
+        if (document.getElementById(parties[i].name).checked) {
+            array[i].push(parties[i].name);
+            console.log('test');
+        }
+    }
+
+	for (var i = 0; i < parties.length; i++) {
+		removeElement(parties[i].name);
+	}
+
+
 	for (var partyNr in parties){
 		parties[partyNr].result = 0;
 	}
 
 	var partyName = '';
 	function findParty(party){
-		return party.name === partyName;
+		return parties.name === partyName;
 	}
 	 
 	document.getElementById("questionTitle").innerHTML = 'Resultaten';
@@ -175,9 +188,10 @@ function results(){
 			var currentParty = currentSubject.parties[partyNr];
 
 			if (currentParty.position === currentChoice) {
-				partyName = currentParty.name;
+				partyName = parties.name;
 				var finalParty = parties.find(findParty);
 				finalParty.result++;
+				array[partyNr].push(parties[partyNr].result);
 
 				function compare(a,b) {
 				  if (b.result < a.result)
@@ -187,16 +201,17 @@ function results(){
 				  return 0;
 				}
 
-				parties.sort(compare);
+				array.sort(compare);
 			} 	
 		}
 	}
-	console.log(parties);
+	console.log(array);
 
-	for (var i = 0; i < parties.length; i++) {
-		var partiesResultsPara = document.createElement("p");
-		var partiesName = document.createTextNode(parties[i].name + " = " + parties[i].result);
+	for (var i = 0; i < array.length; i++) {
+		var partiesResultsPara = document.createElement("div");
+		var partiesName = document.createTextNode(array[i]);
 		partiesResultsPara.appendChild(partiesName);
+		partiesResultsPara.className += " partyName";
 
 		var containerQuestion = document.getElementById("containerQuestion");
 		containerQuestion.appendChild(partiesResultsPara);
@@ -211,8 +226,8 @@ function removeElement(btnId) {
 
 function selectAllBigParties() {
 	for (var i = 0; i < parties.length; i++) {		
-		if (parties[i].size >= 9) {
-			document.getElementById("checkboxParties").checked = true;
+		if (parties[i].size > 9) {
+			document.getElementById(parties[i].name).checked = true;
 		}
 	}
 }
