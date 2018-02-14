@@ -12,8 +12,14 @@ window.onload = function(){
 			changeContent();
 			showOpinons.style.display = "none";
 			choices[currentNr] = choice;
-			console.log(choices);
+			
 			currentNr++;
+
+			var x = document.getElementById("myCheck").checked;
+		    if (x == true) {
+		    	finalParty.result++;	    	
+		    }	
+		    console.log(choices);		
 		});
 	}
 
@@ -47,11 +53,12 @@ function startFunction() {
 
 function changeContent() {
 	if(currentSubject >= subjects.length) {
-		results();
+		selectParties();
 	}
 	else {
 		document.getElementById("questionTitle").innerHTML = subjects[currentSubject].title;
 		document.getElementById("questionText").innerHTML = subjects[currentSubject].statement;
+		document.getElementById("myCheck").checked = false;
 	}
 }
 
@@ -73,13 +80,6 @@ function partiesOpinion() {
 			var elementEens = document.getElementById("opinonInnerEens");
 			elementEens.appendChild(eensPara);
 			elementEens.appendChild(explanationEens);
-
-			/*if (eensExplanation.style.display === "none") {
-		        eensExplanation.style.display = "block";
-		    } 
-		    else {
-		        eensExplanation.style.display = "none";
-		    }*/
 		} 
 		else {
 			if (subjects[currentSubject].parties[i].position == 'ambivalent'){
@@ -91,14 +91,6 @@ function partiesOpinion() {
 				var elementGeenVanBeide = document.getElementById("opinonInnerGeenVanBeide");
 				elementGeenVanBeide.appendChild(geenVanBeidePara);
 				elementGeenVanBeide.appendChild(explanationGeenVanBeide);
-
-
-				/*if (document.getElementById("geenVanBeideExplanation").style.display === "none") {
-		        document.getElementById("geenVanBeideExplanation").style.display = "block";
-			    } 
-			    else {
-			        document.getElementById("geenVanBeideExplanation").style.display = "none";
-			    }*/
 			} 
 			else {
 				if (subjects[currentSubject].parties[i].position === 'contra') {
@@ -110,15 +102,6 @@ function partiesOpinion() {
 					var elementOneens = document.getElementById("opinonInnerOneens");
 					elementOneens.appendChild(oneensPara);
 					elementOneens.appendChild(explanationOneens);
-
-					//document.getElementById("oneensOpinon").innerHTML = subjects[currentSubject].parties[i].name;
-
-					/*if (document.getElementById("oneensExplanation").style.display === "none") {
-				        document.getElementById("oneensExplanation").style.display = "block";
-				    } 
-				    else {
-				        document.getElementById("oneensExplanation").style.display = "none";
-				    }*/
 				}
 			}
 		}
@@ -126,70 +109,110 @@ function partiesOpinion() {
 	
 }
 
-function results(){
+function selectParties() {
 	removeElement('buttonEens');
 	removeElement('buttonGeenVanBeide');
 	removeElement('buttonOneens');
-	removeElement('buttonSkipQuestion');
 	removeElement('showOpinons');
 	removeElement('headerPartiesOpinion');
 	removeElement('questionText');
+	removeElement('myCheck');
+	removeElement('checkboxQuestion');
+	removeElement("buttonSkipQuestion");
 
+	document.getElementById("questionTitle").innerHTML = 'Kies je partijen';
+
+	var buttonSelectBigParties = document.getElementById("buttonSelectBigParties");
+    var buttonResults = document.getElementById("buttonResults");
+    if (buttonResults.style.display === "block") {
+        buttonResults.style.display = "none";
+        buttonSelectBigParties.style.display = "none";
+    } 
+    else {
+        buttonResults.style.display = "block";
+        buttonSelectBigParties.style.display = "block";
+    }
+
+	for (var i = 0; i < parties.length; i++) {
+		var input = document.createElement("input");
+		input.type = "checkbox";
+		input.id = "checkboxParties";
+		var partiesResultsPara = document.createElement("p");
+		var partiesName = document.createTextNode(parties[i].name);
+		partiesResultsPara.appendChild(input, partiesName);
+
+		var containerQuestion = document.getElementById("containerQuestion");
+		containerQuestion.appendChild(partiesResultsPara);
+	}
+
+	var x = document.getElementById("checkboxParties").checked;
+    if (x == true) {
+    	parties = partiesArray[i];	    	
+    }	
+
+}
+
+
+
+function results(){
+	for (var partyNr in parties){
+		parties[partyNr].result = 0;
+	}
+
+	var partyName = '';
+	function findParty(party){
+		return party.name === partyName;
+	}
 	 
 	document.getElementById("questionTitle").innerHTML = 'Resultaten';
 
-	var finalResults = [];
-	var countResults = 0;
-	var count = 0;
-	var countParties = 0;
-
 	for (var i = 0; i < choices.length; i++) {
-		for (var j = 0; j < subjects[count].parties.length; j++) {
-			if (subjects[count].parties[j].position == choices[j]) {
-				countResults++;
-				finalResults[j] = subjects[count].parties[j].name + ' ' + countResults;	
-				//countParties++;
-			} 
-			else {
-				finalResults[j] = subjects[count].parties[j].name + ' ' + countResults;
-				//countParties++;
-			}
-		count++;	
+		var currentSubject = subjects[i];
+		var numberOfParties = currentSubject.parties.length;
+		var currentChoice = choices[i];
+
+		for (var partyNr = 0; partyNr < numberOfParties; partyNr++) {
+			var currentParty = currentSubject.parties[partyNr];
+
+			if (currentParty.position === currentChoice) {
+				partyName = currentParty.name;
+				var finalParty = parties.find(findParty);
+				finalParty.result++;
+
+				function compare(a,b) {
+				  if (b.result < a.result)
+				    return -1;
+				  if (b.result > a.result)
+				    return 1;
+				  return 0;
+				}
+
+				parties.sort(compare);
+			} 	
 		}
-	
 	}
-	console.log(finalResults);
+	console.log(parties);
 
-	
-				var partiesResultsPara = document.createElement("p");
-				var partiesName = document.createTextNode(finalResults);
-				partiesResultsPara.appendChild(partiesName);
+	for (var i = 0; i < parties.length; i++) {
+		var partiesResultsPara = document.createElement("p");
+		var partiesName = document.createTextNode(parties[i].name + " = " + parties[i].result);
+		partiesResultsPara.appendChild(partiesName);
 
-				var containerQuestion = document.getElementById("containerQuestion");
-				containerQuestion.appendChild(partiesResultsPara);
-		// loop door de choices
-		// haal het juist subject op (subject op dezelfde positie in array als positie van de choice in de array)
-		// loop door de parties uit het opgehaalde subject
-			// als antwoord overeenkomt, tel 1 op bij resultaat van die partij in de results array
-
-
-	/*for(var j = 0; j <= parties.length; j++) {
-		for(var i = 0; choices[i] == subjects[i].parties[j].position; i++){
-			var partiesResultsPara = document.createElement("p");
-			var partiesName = document.createTextNode(parties[j].name);
-			partiesResultsPara.appendChild(partiesName);
-
-			var containerQuestion = document.getElementById("containerQuestion");
-			containerQuestion.appendChild(partiesResultsPara);
-		}
-	}*/
-
-	
-
+		var containerQuestion = document.getElementById("containerQuestion");
+		containerQuestion.appendChild(partiesResultsPara);
+	}
 }
 
 function removeElement(btnId) {
     var elem = document.getElementById(btnId);
     elem.parentNode.removeChild(elem);
     return false;
+}
+
+function selectAllBigParties() {
+	for (var i = 0; i < parties.length; i++) {		
+		if (parties[i].size >= 9) {
+			document.getElementById("checkboxParties").checked = true;
+		}
+	}
 }

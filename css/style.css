@@ -53,6 +53,7 @@ body {
 #headerPartiesOpinion{
 	clear: both;
 	text-align: center;
+	cursor: pointer;
 }
 
 .buttonContainer{
@@ -101,4 +102,19 @@ body {
 #buttonSkipQuestion {
  	background-color: transparent;
  	color: #8F9293;
+ }
+
+ #buttonSelectBigParties,
+ #buttonResults {
+ 	display: none;
+ 	margin: 2px;
+	box-sizing: border-box;
+	float: left;
+	width: 49%;
+	border-radius: 5px;
+	background-color: #E7EAEB;
+	cursor: pointer;
+	font-size: 16px;
+	padding: 10px 15px;
+	text-align: center;
  }

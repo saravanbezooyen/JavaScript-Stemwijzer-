@@ -16,11 +16,19 @@
 
 		<p id="questionText"></p>
 
+		<p id="checkboxQuestion">Ik vind deze vraag belangrijk <input type="checkbox" id="myCheck"></p>
+
 		<div class="buttonContainer">
 			<div id="buttonEens" class="button">Eens</div>
 			<div id="buttonGeenVanBeide" class="button">Geen van beide</div>
 			<div id="buttonOneens" class="button">Oneens</div>
 			<div id="buttonSkipQuestion" class="button">Sla deze vraag over <i class="fas fa-angle-double-right"></i></div>
+			<div id="buttonSelectBigParties" onclick="selectAllBigParties()" class="">Selecteer alle grote partijen</div>
+			<div id="buttonResults" onclick="results()" class="">Volgende</div>
+		</div>
+
+		<div>
+			<p><input type="checkbox" id="" name=""> Partij</p>
 		</div>
 
 		<h2 onclick="partiesOpinion()" id="headerPartiesOpinion">Wat vinden de partijen?   <i class="fas fa-angle-down"></i></h2>
