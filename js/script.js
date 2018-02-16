@@ -3,6 +3,8 @@ var showOpinons = document.getElementById("showOpinons");
 var choices = [];
 var currentNr = 0;
 
+var bigPartiesArray = [];
+
 window.onload = function(){	 
 	changeContent();
 
@@ -135,10 +137,18 @@ function selectParties() {
 
 	for (var i = 0; i < parties.length; i++) {
 		var div = document.createElement('div');
-		div.innerHTML = '<input type="checkbox" id="' + parties[i].name + '"/>' + ' '+ parties[i].name;
+		div.innerHTML = '<input type="checkbox" onclick="OnChangeCheckbox (this)" id="' + parties[i].name + '"/>' + ' '+ parties[i].name;
 
 		var containerQuestion = document.getElementById("containerQuestion");
 		containerQuestion.appendChild(div);
+
+		/*document.getElementById(parties[i].name).addEventListener("click", function() {
+			if (document.getElementById(parties[i].name).checked) {
+				var bigParty = {name: parties[i].name, result: 0};
+				bigPartiesArray.push(bigParty);
+			}
+		});*/
+
 	}
 
 	
@@ -151,17 +161,28 @@ function selectParties() {
 
 }
 
+ function OnChangeCheckbox (checkbox) {
+ 	for (var i = 0; i < parties.length; i++) {
+	    if (checkbox.checked) {
+	    	var bigParty = {name: parties[i].name, result: 0};
+			bigPartiesArray.push(bigParty);
+			console.dir(bigPartiesArray);
+		}
+	}
+	console.dir(bigPartiesArray);
+}
+
 function results(){
 	
 
 	var array = [];
 
-	for (i = 0; i < parties.length; i++) {
+	/*for (i = 0; i < parties.length; i++) {
         if (document.getElementById(parties[i].name).checked) {
-            array[i].push(parties[i].name);
+            array.push(parties[i].name);
             console.log('test');
         }
-    }
+    }*/
 
 	for (var i = 0; i < parties.length; i++) {
 		removeElement(parties[i].name);
@@ -191,7 +212,7 @@ function results(){
 				partyName = parties.name;
 				var finalParty = parties.find(findParty);
 				finalParty.result++;
-				array[partyNr].push(parties[partyNr].result);
+				bigPartiesArray.push(parties[partyNr].result);
 
 				function compare(a,b) {
 				  if (b.result < a.result)
@@ -201,15 +222,15 @@ function results(){
 				  return 0;
 				}
 
-				array.sort(compare);
+				bigPartiesArray.sort(compare);
 			} 	
 		}
 	}
-	console.log(array);
+	console.log(bigPartiesArray);
 
-	for (var i = 0; i < array.length; i++) {
+	for (var i = 0; i < bigPartiesArray.length; i++) {
 		var partiesResultsPara = document.createElement("div");
-		var partiesName = document.createTextNode(array[i]);
+		var partiesName = document.createTextNode(bigPartiesArray[i]);
 		partiesResultsPara.appendChild(partiesName);
 		partiesResultsPara.className += " partyName";
 
@@ -228,6 +249,10 @@ function selectAllBigParties() {
 	for (var i = 0; i < parties.length; i++) {		
 		if (parties[i].size > 9) {
 			document.getElementById(parties[i].name).checked = true;
+			var bigParty = {name: parties[i].name, result: 0};
+			bigPartiesArray.push(bigParty);
 		}
 	}
+
+	console.dir(bigPartiesArray);
 }
