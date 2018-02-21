@@ -2,12 +2,12 @@ var currentSubject = 0;
 var showOpinons = document.getElementById("showOpinons");
 var choices = [];
 var currentNr = 0;
-var bigPartiesArray = [];
+var selectedPartiesArray = [];
 
 window.onload = function(){	 
 	changeContent();
 
-	function addEventListenerToButtons(btnId, choice) {
+	function addEventListenerToButtons(btnId, choice) { // remembers the choice by every question
 		document.getElementById(btnId).addEventListener("click", function() {
 			currentSubject++;
 			changeContent();
@@ -23,7 +23,7 @@ window.onload = function(){
 	addEventListenerToButtons("buttonOneens", "contra");
 	addEventListenerToButtons("buttonSkipQuestion", "");
 
-	document.getElementById("buttonGoBack").addEventListener("click", function() {
+	document.getElementById("buttonGoBack").addEventListener("click", function() { // if you go a question back
 		if(currentSubject <! 0) {
 			location.reload();				
 		}
@@ -46,7 +46,7 @@ function startFunction() {
     }
 }
 
-function changeContent() {
+function changeContent() { // change the questions
 	if(currentSubject >= subjects.length) {
 		selectParties();
 	}
@@ -57,7 +57,7 @@ function changeContent() {
 	}
 }
 
-function partiesOpinion() {
+function partiesOpinion() { // sorts the party opinion by the correct position
     if (showOpinons.style.display === "block") {
         showOpinons.style.display = "none";
     } 
@@ -103,7 +103,7 @@ function partiesOpinion() {
 	}	
 }
 
-function selectParties() {
+function selectParties() {  // select the parties before seeing the results
 	removeElement('buttonEens');
 	removeElement('buttonGeenVanBeide');
 	removeElement('buttonOneens');
@@ -115,7 +115,7 @@ function selectParties() {
 	removeElement("buttonSkipQuestion");
 	removeElement("buttonGoBack");
 	
-	document.getElementById("questionTitle").innerHTML = 'Kies je partijen';
+	document.getElementById("questionTitle").innerHTML = 'Kies je partijen'; // change title
 
 	var buttonSelectBigParties = document.getElementById("buttonSelectBigParties");
     var buttonResults = document.getElementById("buttonResults");
@@ -128,100 +128,84 @@ function selectParties() {
         buttonSelectBigParties.style.display = "block";
     }
 
-	for (var i = 0; i < parties.length; i++) {
+	for (var i = 0; i < parties.length; i++) { // create checkboxes
 		var div = document.createElement('div');
 		div.innerHTML = '<input type="checkbox" id="' + parties[i].name + '"/>' + ' '+ parties[i].name;
 
 		var containerQuestion = document.getElementById("containerQuestion");
 		containerQuestion.appendChild(div);
 
-		document.getElementById(parties[i].name).onclick = function(event) {
-		    if (this.checked) {
-		    	var bigParty = {name: event.target.getAttribute('id'), result: 0};
-				bigPartiesArray.push(bigParty);
-				console.dir(bigPartiesArray);
-		    } else {
-		    	if (this.checked = false) {
-		    		var index = array.indexOf(event.target.getAttribute('id'));
-					    array.splice(index, 1);
-					 	console.dir(bigPartiesArray);
+		document.getElementById(parties[i].name).onclick = function(event) { // check if party name is the same as id name and add property to object
+			var finalParty = parties.find(function findParty(party){
+				return party.name == event.target.getAttribute('id');
+			});
 
-		    	}
+		    if (document.getElementById(parties[i].name).checked) { // check if checkbox is checked or not
+		    	finalParty.isChecked = true;
+		    } else {
+		    	finalParty.isChecked = false;
 		    }
 		}
 	}
 }
 
-/*function OnChangeCheckbox (checkbox) {
- 	for (var i = 0; i < parties.length; i++) {
-	    if (checkbox.checked) {
-	    	var bigParty = {name: parties[i].name, result: 0};
-			bigPartiesArray.push(bigParty);
-		}
-	}
-	console.dir(bigPartiesArray);
-}*/
-
-
-
-function results(){
-	var array = [];
-
-	/*for (i = 0; i < parties.length; i++) {
-        if (document.getElementById(parties[i].name).checked) {
-            array.push(parties[i].name);
-            console.log('test');
-        }
-    }*/
-
-	for (var i = 0; i < parties.length; i++) {
-		removeElement(parties[i].name);
-	}
-
-
+function calculateScores() {
 	for (var partyNr in parties){
 		parties[partyNr].result = 0;
 	}
 
-	var partyName = '';
-	function findParty(party){
-		return parties.name === partyName;
-	}
-	 
-	document.getElementById("questionTitle").innerHTML = 'Resultaten';
-
+	// looping through the made choices
 	for (var i = 0; i < choices.length; i++) {
 		var currentSubject = subjects[i];
+		// length of the parties
 		var numberOfParties = currentSubject.parties.length;
 		var currentChoice = choices[i];
 
+		// looping through the parties
 		for (var partyNr = 0; partyNr < numberOfParties; partyNr++) {
 			var currentParty = currentSubject.parties[partyNr];
 
+			// is het standpunt van de huidige partij gelijk aan de ingevoerde keuze die bij het standpunt hoort?
 			if (currentParty.position === currentChoice) {
-				partyName = parties.name;
-				var finalParty = parties.find(findParty);
-				finalParty.result++;
-				bigPartiesArray.push(parties[partyNr].result);
 
-				bigPartiesArray.sort(function(a, b){
-					return b - a
+				// zoek de partij waar ik nu mee bezig ben in de array van partijen waar ik de score in ga bijhouden
+				var finalParty = parties.find(function findParty(party){
+					return party.name == currentParty.name;
 				});
+
+				// hoog de sore met 1 op voor definalParty.result partij
+				finalParty.result++;
 			} 	
 		}
 	}
-	console.log(bigPartiesArray);
 
-	for (var i = 0; i < bigPartiesArray.length; i++) {
-		var partiesResultsPara = document.createElement("div");
-		var partiesName = document.createTextNode(bigPartiesArray[i].name + ' = ' + bigPartiesArray[i].result);
-		partiesResultsPara.appendChild(partiesName);
-		partiesResultsPara.className += partyName;
+	parties.sort(function(party1, party2){
+		return party2.result - party1.result;
+	});
+}
 
-		var containerQuestion = document.getElementById("containerQuestion");
-		containerQuestion.appendChild(partiesResultsPara);
+function renderResults() {
+	document.getElementById("questionTitle").innerHTML = 'Resultaten';
+
+	for (var i = 0; i < parties.length; i++) {
+		if(parties[i].isChecked = true) {
+			console.log('succes');
+			var partiesResultsPara = document.createElement("div");
+			var partiesName = document.createTextNode(parties[i].name + ' = ' + parties[i].result);
+			partiesResultsPara.appendChild(partiesName);
+			//partiesResultsPara.className += partyName;
+
+			var containerQuestion = document.getElementById("containerQuestion");
+			containerQuestion.appendChild(partiesResultsPara);
+		}
 	}
 }
+
+function results(){
+	calculateScores();
+	renderResults();
+}
+
 
 function removeElement(btnId) {
     var elem = document.getElementById(btnId);
@@ -234,9 +218,9 @@ function selectAllBigParties() {
 		if (parties[i].size > 9) {
 			document.getElementById(parties[i].name).checked = true;
 			var bigParty = {name: parties[i].name, result: 0};
-			bigPartiesArray.push(bigParty);
+			selectedPartiesArray.push(bigParty);
 		}
 	}
 
-	console.dir(bigPartiesArray);
+	console.dir(selectedPartiesArray);
 }
