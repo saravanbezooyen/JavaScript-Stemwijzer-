@@ -2,7 +2,6 @@ var currentSubject = 0;
 var showOpinons = document.getElementById("showOpinons");
 var choices = [];
 var currentNr = 0;
-
 var bigPartiesArray = [];
 
 window.onload = function(){	 
@@ -13,14 +12,8 @@ window.onload = function(){
 			currentSubject++;
 			changeContent();
 			showOpinons.style.display = "none";
-			choices[currentNr] = choice;
-			
+			choices[currentNr] = choice;			
 			currentNr++;
-
-			/*var x = document.getElementById("myCheck").checked;
-		    if (x == true) {
-		    	finalParty.result++;	    	
-		    }	*/
 		    console.log(choices);		
 		});
 	}
@@ -137,44 +130,41 @@ function selectParties() {
 
 	for (var i = 0; i < parties.length; i++) {
 		var div = document.createElement('div');
-		div.innerHTML = '<input type="checkbox" onclick="OnChangeCheckbox (this)" id="' + parties[i].name + '"/>' + ' '+ parties[i].name;
+		div.innerHTML = '<input type="checkbox" id="' + parties[i].name + '"/>' + ' '+ parties[i].name;
 
 		var containerQuestion = document.getElementById("containerQuestion");
 		containerQuestion.appendChild(div);
 
-		/*document.getElementById(parties[i].name).addEventListener("click", function() {
-			if (document.getElementById(parties[i].name).checked) {
-				var bigParty = {name: parties[i].name, result: 0};
+		document.getElementById(parties[i].name).onclick = function(event) {
+		    if (this.checked) {
+		    	var bigParty = {name: event.target.getAttribute('id'), result: 0};
 				bigPartiesArray.push(bigParty);
-			}
-		});*/
+				console.dir(bigPartiesArray);
+		    } else {
+		    	if (this.checked = false) {
+		    		var index = array.indexOf(event.target.getAttribute('id'));
+					    array.splice(index, 1);
+					 	console.dir(bigPartiesArray);
 
+		    	}
+		    }
+		}
 	}
-
-	
-
-
-	/*var x = document.getElementById("checkboxParties").checked;
-    if (x == true) {
-    	parties = partiesArray[i];	    	
-    }	*/
-
 }
 
- function OnChangeCheckbox (checkbox) {
+/*function OnChangeCheckbox (checkbox) {
  	for (var i = 0; i < parties.length; i++) {
 	    if (checkbox.checked) {
 	    	var bigParty = {name: parties[i].name, result: 0};
 			bigPartiesArray.push(bigParty);
-			console.dir(bigPartiesArray);
 		}
 	}
 	console.dir(bigPartiesArray);
-}
+}*/
+
+
 
 function results(){
-	
-
 	var array = [];
 
 	/*for (i = 0; i < parties.length; i++) {
@@ -214,15 +204,9 @@ function results(){
 				finalParty.result++;
 				bigPartiesArray.push(parties[partyNr].result);
 
-				function compare(a,b) {
-				  if (b.result < a.result)
-				    return -1;
-				  if (b.result > a.result)
-				    return 1;
-				  return 0;
-				}
-
-				bigPartiesArray.sort(compare);
+				bigPartiesArray.sort(function(a, b){
+					return b - a
+				});
 			} 	
 		}
 	}
@@ -230,9 +214,9 @@ function results(){
 
 	for (var i = 0; i < bigPartiesArray.length; i++) {
 		var partiesResultsPara = document.createElement("div");
-		var partiesName = document.createTextNode(bigPartiesArray[i]);
+		var partiesName = document.createTextNode(bigPartiesArray[i].name + ' = ' + bigPartiesArray[i].result);
 		partiesResultsPara.appendChild(partiesName);
-		partiesResultsPara.className += " partyName";
+		partiesResultsPara.className += partyName;
 
 		var containerQuestion = document.getElementById("containerQuestion");
 		containerQuestion.appendChild(partiesResultsPara);
