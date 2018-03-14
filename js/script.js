@@ -193,7 +193,6 @@ function renderResults() {
 			var partiesResultsPara = document.createElement("div");
 			var partiesName = document.createTextNode(parties[i].name + ' = ' + parties[i].result);
 			partiesResultsPara.appendChild(partiesName);
-			//partiesResultsPara.className += partyName;
 
 			var containerQuestion = document.getElementById("containerQuestion");
 			containerQuestion.appendChild(partiesResultsPara);
